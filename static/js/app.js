@@ -20,4 +20,30 @@ function buildTable(data) {
             cell.text(val);
         })
     });
-}
+};
+
+// Add Filter - Button Click
+// add function to hold our date data, filtered and unfiltered
+function handleClick() {
+    // grab datetime value from filter
+    let date = d3.select('#datetime').property('value');
+    // set variable equal to original table data as default
+    let filteredData = tableData;
+
+    // if date exists (clicked/entered), filter data using the date
+    if (date) {
+        // apply filter to the table data to keep rows where datetime value matches the filter value
+        filteredData = filteredData.filter(row => row.datetime === date);
+    };
+
+    // Rebuild table using filtered data
+    // if no date entered, then filteredData will be original data
+    buildTable(filteredData);
+};
+
+// Listen for click with D3 and then execute handleClick function
+d3.selectAll('#filter-btn').on('click', handleClick);
+
+// make sure table loads as soon as page does
+// call buildTable using original data
+buildTable(tableData);
